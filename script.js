@@ -3,14 +3,12 @@ let guessMarker = null;
 let actualLocation = null;
 let guessLocation = null;
 
-// Random world coordinates (biased toward land regions)
 function randomCoordinates() {
   const lat = Math.random() * 140 - 60;
   const lng = Math.random() * 360 - 180;
   return { lat, lng };
 }
 
-// Distance formula (Haversine)
 function getDistance(lat1, lon1, lat2, lon2) {
   const R = 6371;
   const dLat = (lat2 - lat1) * Math.PI/180;
@@ -27,24 +25,30 @@ function getDistance(lat1, lon1, lat2, lon2) {
 }
 
 async function loadRandomLocation() {
+  actualLocation = null;
+
   const coords = randomCoordinates();
 
-  // Mapillary public image API (demo key)
-  const url = `https://graph.mapillary.com/images?access_token=MLY|27479544215069534&fields=thumb_1024_url,computed_geometry&closeto=${coords.lng},${coords.lat}&radius=100000`;
+  const url = `https://graph.mapillary.com/images?access_token=27479544215069534&fields=thumb_1024_url,computed_geometry&closeto=${coords.lng},${coords.lat}&radius=50000`;
 
-  const res = await fetch(url);
-  const data = await res.json();
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
 
-  if (data.data && data.data.length > 0) {
-    const image = data.data[0];
-    document.getElementById("streetImage").src = image.thumb_1024_url;
+    if (data.data && data.data.length > 0) {
+      const image = data.data[0];
 
-    actualLocation = {
-      lat: image.computed_geometry.coordinates[1],
-      lng: image.computed_geometry.coordinates[0]
-    };
-  } else {
-    loadRandomLocation();
+      document.getElementById("streetImage").src = image.thumb_1024_url;
+
+      actualLocation = {
+        lat: image.computed_geometry.coordinates[1],
+        lng: image.computed_geometry.coordinates[0]
+      };
+    } else {
+      loadRandomLocation();
+    }
+  } catch (error) {
+    console.error("Error loading image:", error);
   }
 }
 
@@ -65,7 +69,12 @@ function init() {
 
   document.getElementById("guessBtn").addEventListener("click", () => {
     if (!guessLocation) {
-      alert("Click the map!");
+      alert("Click on the map first!");
+      return;
+    }
+
+    if (!actualLocation) {
+      alert("Street image not loaded yet!");
       return;
     }
 
