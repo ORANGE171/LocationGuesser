@@ -30,7 +30,7 @@ async function loadRandomLocation() {
   const coords = randomCoordinates();
 
   // Mapillary public image API (demo key)
-  const url = `https://graph.mapillary.com/images?access_token=MLY|YOUR_PUBLIC_TOKEN&fields=thumb_1024_url,computed_geometry&closeto=${coords.lng},${coords.lat}&radius=100000`;
+  const url = `https://graph.mapillary.com/images?access_token=MLY|27479544215069534&fields=thumb_1024_url,computed_geometry&closeto=${coords.lng},${coords.lat}&radius=100000`;
 
   const res = await fetch(url);
   const data = await res.json();
