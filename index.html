@@ -14,8 +14,25 @@
 
   <div id="map-container">
     <div id="map"></div>
-    <button id="guessBtn">Submit Guess</button>
-    <p id="result"></p>
+   <div id="button-row">
+  <button id="guessBtn">Submit Guess</button>
+  <button id="infoBtn">Didler Info</button>
+</div>
+
+<p id="result"></p>
+
+<div id="infoModal" class="modal">
+  <div class="modal-content">
+    <span id="closeModal">&times;</span>
+    <h2>About Didler</h2>
+    <p>
+      Didler is a free GeoGuessr-style geography game.
+      It uses OpenStreetMap for maps and Mapillary for
+      real-world street images.
+      Guess locations and test your geography skills!
+    </p>
+  </div>
+</div>
   </div>
 </div>
 
